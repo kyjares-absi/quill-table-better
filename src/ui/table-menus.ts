@@ -869,7 +869,7 @@ class TableMenus {
     for (const td of selectedTds) {
       if (leftTd.isEqualNode(td)) continue;
       const blot = Quill.find(td) as TableCell;
-      blot.moveChildren(leftTdBlot);
+      // blot.moveChildren(leftTdBlot);
       blot.remove();
       if (!blot.parent?.children?.length) offset++;
     }
@@ -877,9 +877,8 @@ class TableMenus {
       // Subtract the number of rows deleted by the merge
       row.children.forEach((child: TableCell) => {
         if (child.domNode.isEqualNode(leftTd)) return;
-        const rowspan = child.domNode.getAttribute('rowspan');
+        const rowspan = Number(child.domNode.getAttribute("rowspan") ?? 1);
         const [formats] = getCellFormats(child);
-        // @ts-expect-error
         child.replaceWith(child.statics.blotName, { ...formats, rowspan: rowspan - offset });
       });
     }
